@@ -11,16 +11,18 @@
 
   <body>
     <a-scene
-      vr-mode-ui="enabled: false"
+      vr-mode-ui="enabled: true"
       arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: true;"
     >
       <a-text
-        value="This content will always face you."
-        look-at="[gps-camera]"
+        value="XiaKeDao"
+        look-at="[mainCamera]"
         scale="120 120 120"
         gps-entity-place="latitude: 104.0774793139; longitude: 30.553819701464"
       ></a-text>
-      <a-camera gps-camera="simulateLatitude: 104.0774793139;simulateLongitude:30.553819701464" rotation-reader  > </a-camera>
+
+      
+      <a-camera id="mainCamera" gps-camera="simulateLatitude: 104.0774793139;simulateLongitude:30.553819701464" rotation-reader  > </a-camera>
     </a-scene>
   </body>
 </html>
