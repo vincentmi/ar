@@ -6,16 +6,16 @@
     <title>GPS_AR</title>
 
     <style>
-      .buttons {
+      .panel {
         position: absolute;
         bottom: 0;
         left: 0;
         width: 100%;
-        height: 5em;
-        display: flex;
+        height: 15em;
         justify-content: center;
         align-items: center;
         z-index: 10;
+        background-color: rgba(0, 0, 0, 0.1);
       }
   
       .button {
@@ -27,6 +27,12 @@
         width: 8em;
         height: 2em;
         margin: 0 0 0 0.5em;
+        cursor: pointer;
+      }
+
+      * {
+        font-size: 12px;
+        font-family: Arial, Helvetica, sans-serif;
       }
     </style>
 
@@ -43,38 +49,77 @@
 
   <body>
     <a-scene
+      id="scene"
       vr-mode-ui="enabled: false"
       arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: true;"
     >
-      <a-text
+      <!-- <a-text
         value=" Welcome to Hicoffice"
         look-at="[gps-camera]"
         scale="120 120 120"
+        color="red"
         gps-entity-place="latitude: 104.0774793139; longitude: 30.553819701464"
-      ></a-text>
+      ></a-text> -->
+
+      <a-box
+        color="red"
+        look-at="[gps-camera]"
+        gps-entity-place="latitude: 104.06522918908374; longitude: 30.550839694390927"
+        depth="1" height="1" width="1"
+      ></a-box>
 
       
-      <a-camera   gps-camera="simulateLatitude: 104.0774793139;simulateLongitude:30.553819701464" rotation-reader  > </a-camera>
+      <a-camera   gps-camera="simulateLatitude: 104.06533772391775;simulateLongitude:30.550837978743637" rotation-reader  > </a-camera>
     </a-scene>
 
-    <div class="buttons">
-      <button id="btn1" class="button">测试</button>
-      <button id="btn2" class="button">获取位置</button>
+    <div class="panel">
+      <div style="display: block;text-align:center;height:5em;padding:1em 0 0 0">
+        <button id="btn1" class="button">CameraInfo</button>
+        <button id="btn2" class="button">获取位置</button>
+        <input id="keyword" value="南湖逸家" />
+        <button id="navi" class="button">导航</button>
+      </div>
+
+
+      <div id="console" style="display: block;width:100%;height:10em;"></div>
+
     </div>
     
     <script>
 
+      var poiList=[
+        {
+          name:"中国银行(领地店)",
+          lng:104.06377148536657,
+          lat:30.5498208681624
+        },
+
+        {
+          name:"僖悦酒店(节能店)",
+          lng:104.06674966038992,
+          lat:30.548661387539283
+        }
+        ,
+        {
+          name: "西顿C座大门",
+          lng: 104.06784396348611,
+          lat:30.548377099366196
+          //WGS84: 104.06533772391775,30.550837978743637
+        }
+      ]
+
      
     var map = new AMap.Map("container", {
         resizeEnable: true,
-        center: [116.397428, 39.90923],//地图中心点
+        center: [104.07564210143,30.551927668036],//地图中心点
         zoom: 13 
     });
     var walking = new AMap.Walking({
         map: map,
         panel: "panel"
     }); 
-    walking.search([116.399028, 39.845042], [116.436281, 39.880719], function(status, result) {
+    //walking.search([116.399028, 39.845042], [116.436281, 39.880719], function(status, result) {
+    walking.search([104.06784396348611, 30.548377099366196], [104.07023836398508, 30.555948915874943], function(status, result) {
         // result即是对应的步行路线数据信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_WalkingResult
         if (status === 'complete') {
           console.log(result)
@@ -84,6 +129,12 @@
         } 
     });
 
+    var placeSearch;
+    AMap.plugin(['AMap.PlaceSearch'],function(){
+      placeSearch = new AMap.PlaceSearch({
+        city: '028'
+      });
+    })
 
 
     window.onload = function () {
@@ -92,6 +143,15 @@
         .addEventListener("click", function () {
           console.log("button press..")
           console.log(document.querySelector("[gps-camera]"))
+
+          let plane = document.createElement("a-plane")
+          plane.setAttribute("gps-entity-place","latitude: 104.0774793139; longitude: 30.553819701464")
+          plane.setAttribute("color","green")
+          plane.setAttribute("heigh","200")
+          plane.setAttribute("width","200")
+          plane.setAttribute("lookAt","[gps-camera]")
+          document.querySelector("#scene").appendChild(plane)
+
         });
 
       document.querySelector("#btn2")
@@ -100,8 +160,18 @@
           var lat = position.coords.latitude;
           var lng = position.coords.longitude;
           console.log(lng+","+lat)
+          document.querySelector("#console").innerHTML = lng+","+lat;
       });
       });
+
+      document.querySelector("#navi").addEventListener("click",function(){
+        let keyword = document.querySelector("#keyword").value;
+        console.log(keyword)
+        placeSearch.search(keyword, function (status, result) {
+          // 查询成功时，result即对应匹配的POI信息
+          console.log(result)
+       });
+      })
     }
 
   </script>
