@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>GPS_AR</title>
+
+</head>
+<body>
+    <h1>Get Loction</h1>
+
+    <button id="getLoc">Get Location</button>
+
+    <br/>
+    <textarea id="loc"></textarea>
+
+    <script>
+        window.onload = function () {
+            // 监听“Get Location”按钮的点击事件
+            document.querySelector("#getLoc").addEventListener("click", function () {
+                // 获取设备的GPS位置
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    // 获取纬度和经度信息
+                    var lat = position.coords.latitude;
+                    var lng = position.coords.longitude;
+
+                    // 将经纬度信息输出到文本框中
+                    document.querySelector("#loc").value += lng+","+lat+"\n";
+                });
+            });
+        }
+            
+    </script>
+
+</body>
+</html>

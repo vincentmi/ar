@@ -53,6 +53,10 @@
       vr-mode-ui="enabled: false"
       arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: true;"
     >
+    <a-assets>
+      <a-asset-item id="arrow" src="scene/arrow.gltf"></a-asset-item>
+    </a-assets>
+
       <!-- <a-text
         value=" Welcome to Hicoffice"
         look-at="[gps-camera]"
@@ -61,12 +65,14 @@
         gps-entity-place="latitude: 104.0774793139; longitude: 30.553819701464"
       ></a-text> -->
 
-      <a-box
+      <a-entity gltf-model="#arrow" modify-materials gps-entity-place="latitude: 104.06522918908374; longitude: 30.550839694390927" depth="1" height="1" width="1"></a-entity>
+
+      <!-- <a-box
         color="red"
         gps-projected-entity-place="latitude: 104.06522918908374; longitude: 30.550839694390927"
         gps-entity-place="latitude: 104.06522918908374; longitude: 30.550839694390927"
         depth="1" height="1" width="1"
-      ></a-box>
+      ></a-box> -->
 
       <a-box
         color="blue"
