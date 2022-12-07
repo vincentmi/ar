@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>GPS_AR</title>
+
+    <style></style>
+    <script src="js/aframe.min.js"></script>
+    <script src="js/aframe.lookat.js"></script>
+  </head>
+
+  <body>
+    <a-scene
+      id="scene"
+      vr-mode-ui="enabled: true"
+    >
+    <a-assets>
+      <a-asset-item id="arrow" src="scene/arrow.gltf"></a-asset-item>
+    </a-assets>
+
+     <a-entity gltf-model="#arrow" modify-materials  gps-entity-place="latitude: 104.06522918908374; longitude: 30.550839694390927" position="0 0 -5" rotation="0 0 0" scale="2 2 2"></a-entity>
+
+      <!-- <a-box color="red" position="0 2 -5" rotation="0 45 45" scale="2 2 2"></a-box> -->
+
+      <a-plane color="yellow" shadow="receive: true" rotation="-90 0 0" width="30" height="30"></a-plane>
+      <a-light type="ambient"   color="#eee"></a-light>
+      <a-light type="point"  castShadow="true" color="red" intensity="2" position="0 -10 10"></a-light>
+
+      <a-camera look-controls wasd-controls position="0 1.8 5" rotation="0 45 0"></a-camera>
+    </a-scene>
+
+
+
+    </div>
+  </body>
+</html>
