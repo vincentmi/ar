@@ -17,6 +17,7 @@
         z-index: 10;
         background-color: rgba(0, 0, 0, 0.1);
       }
+      body{padding:0;margin:0 }
   
       .button {
         padding: 0.25em 0.5em;
@@ -54,6 +55,8 @@
   </head>
 
   <body>
+    <div  id="info" style="z-index:100;position:absolute;top:0;left:0;width:100%;height:5em;padding:0.5em;color:red;overflow-y:scroll;">
+    </div>
     <a-scene
       id="scene"
       vr-mode-ui="enabled: false"
@@ -164,15 +167,31 @@
       return c
     }
 
+    function setInfo(obj){
+      console.log(obj)
+      document.querySelector("#info").innerHTML = JSON.stringify(obj)
+    }
+
     function placeBox(lng,lat){
+      
       let fixed = gcoord.transform([lng,lat],gcoord.GCJ02,gcoord.WGS84)
+      console.log(lng,lat,fixed)
       let box = document.createElement("a-box")
-      box.setAttribute("color",getBoxColor())
-      box.setAttribute("gpsEntityPlace","latitude: "+lat+";longitude: "+lng)
-      box.setAttribute("scale","10 10 10")
+      let color = document.createAttribute("color")
+      color.value = getBoxColor()
+      let gps = document.createAttribute("gps-entity-place")
+      gps.value="latitude:"+fixed[1]+";longitude: "+fixed[0]
+      let scale=document.createAttribute("scale")
+      scale.value="10 10 10"
+      
+      box.setAttributeNode(gps)
+      box.setAttributeNode(color)
+      box.setAttributeNode(scale)
       //console.log(box.getAttributeNames(),box.getAttribute("color"),box.getAttribute("scale"),
       //box.getAttribute("gpsEntityPlace"))
-      document.querySelector("#scene").appendChild(box)
+      console.log(box)
+      let scene =  document.querySelector("#scene")
+      scene.appendChild(box)
     }
 
 
@@ -180,6 +199,9 @@
       navigator.geolocation.getCurrentPosition(function(position) {
         let fromWSG84 = [position.coords.longitude , position.coords.latitude]
         let fromGCJ02 = gcoord.transform(fromWSG84 ,gcoord.WGS84,gcoord.GCJ02)
+
+        setInfo({"heading":position.coords.heading,"lng":position.coords.longitude})
+
         
         console.log("FROM - ",fromWSG84,fromGCJ02)
         
@@ -187,12 +209,17 @@
         let toWGS84 = gcoord.transform(toGCJ02 ,gcoord.GCJ02,gcoord.WGS84)
 
         console.log("TO - ",toWGS84,toGCJ02)
-        
+
         walking.search(fromGCJ02,toGCJ02,function(status,result){
           if (status === 'complete') {
             console.log(result)
             placeBox(result.origin.lng,result.origin.lat)
             placeBox(result.destination.lng,result.destination.lat)
+
+            for(i=0;i<result.routes.length;i++){
+              let route = result.routes[i]
+            
+            }
             
             console.log('绘制步行路线完成')
           } else {
