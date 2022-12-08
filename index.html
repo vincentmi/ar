@@ -259,10 +259,7 @@
     }
 
     window.addEventListener('deviceorientation', function(e){
-      console.log('absolute: ' + e.absolute)
-      console.log('alpha: ' + e.alpha)
-      console.log('beta: ' + e.beta)
-      console.log('gamma: ' + e.gamma)
+      setInfo('absolute: ' + e.absolute+';alpha: ' + e.alpha+';beta: ' + e.beta+';gamma: ' + e.gamma)
   }, false);
 
   </script>
