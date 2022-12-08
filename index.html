@@ -1,71 +1,86 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>GPS_AR</title>
 
-    <style>
-      .panel {
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>GPS_AR</title>
+
+  <style>
+    .panel {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 25em;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    body {
+      padding: 0;
+      margin: 0;
+    }
+
+    .button {
+      padding: 0.25em 0.5em;
+      border-radius: 4px;
+      border: none;
+      background: white;
+      color: black;
+      height: 2em;
+      margin: 0 0 0 0.5em;
+      cursor: pointer;
+    }
+
+    #container {
+      display: inline-block;
+      width: 100%;
+      height: 20em;
+    }
+
+    * {
+      font-size: 12px;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+  </style>
+
+  <script src="js/aframe.min.js"></script>
+  <script src="js/aframe.ar.js"></script>
+  <script src="js/gcoord.js"></script>
+  <script type="text/javascript">
+    window._AMapSecurityConfig = {
+      securityJsCode: "f82e8951685bea0add802ae98be3c40b",
+    };
+  </script>
+  <script type="text/javascript"
+    src="https://webapi.amap.com/maps?v=1.4.15&key=3427e2b77a4a280034b7a59f136c33a9&plugin=AMap.Walking"></script>
+</head>
+
+<body>
+  <div id="info" style="
+        z-index: 100;
         position: absolute;
-        bottom: 0;
+        top: 0;
         left: 0;
         width: 100%;
-        height: 25em;
-        justify-content: center;
-        align-items: center;
-        z-index: 10;
-        background-color: rgba(0, 0, 0, 0.1);
-      }
-      body{padding:0;margin:0 }
-  
-      .button {
-        padding: 0.25em 0.5em;
-        border-radius: 4px;
-        border: none;
-        background: white;
-        color: black;
-        height: 2em;
-        margin: 0 0 0 0.5em;
-        cursor: pointer;
-      }
-      #container{
-        display:inline-block;
-        width:100%;
-        height:20em;
-      }
-    
-
-      * {
-        font-size: 12px;
-        font-family: Arial, Helvetica, sans-serif;
-      }
-    </style>
-
-    <script src="js/aframe.min.js"></script>
-    <script src="js/aframe.ar.js"></script>
-    <script src="js/gcoord.js"></script>
-    <script type="text/javascript">
-      window._AMapSecurityConfig = {
-          securityJsCode:'f82e8951685bea0add802ae98be3c40b',
-      }
-</script>
-    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=3427e2b77a4a280034b7a59f136c33a9&plugin=AMap.Walking"></script>
-  </head>
-
-  <body>
-    <div  id="info" style="z-index:100;position:absolute;top:0;left:0;width:100%;height:5em;padding:0.5em;color:red;overflow-y:scroll;">
-    </div>
-    <a-scene
-      id="scene"
-      vr-mode-ui="enabled: false"
-      arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: true;"
-    >
+        height: 5em;
+        padding: 0.5em;
+        color: red;
+        overflow-y: scroll;
+      "></div>
+  <a-scene 
+  id="scene" 
+  loading-screen="dotsColor: red; backgroundColor: black"
+  vr-mode-ui="enabled: false" 
+  arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: true;">
     <a-assets>
       <a-asset-item id="arrow" src="scene/arrow.gltf"></a-asset-item>
     </a-assets>
 
-      <!-- <a-text
+    <!-- <a-text
         value=" Welcome to Hicoffice"
         look-at="[gps-camera]"
         scale="120 120 120"
@@ -73,16 +88,18 @@
         gps-entity-place="latitude: 104.0774793139; longitude: 30.553819701464"
       ></a-text> -->
 
-      <a-entity gltf-model="#arrow" modify-materials gps-entity-place="latitude: 104.06522918908374; longitude: 30.550839694390927" depth="1" height="1" width="1"></a-entity>
+    <a-entity gltf-model="#arrow" modify-materials
+      gps-entity-place="latitude: 104.06522918908374; longitude: 30.550839694390927" depth="1" height="1"
+      width="1"></a-entity>
 
-      <!-- <a-box
+    <!-- <a-box
         color="red"
         gps-projected-entity-place="latitude: 104.06522918908374; longitude: 30.550839694390927"
         gps-entity-place="latitude: 104.06522918908374; longitude: 30.550839694390927"
         depth="1" height="1" width="1"
       ></a-box> -->
 
-      <!-- <a-box
+    <!-- <a-box
         color="blue"
         gps-projected-entity-place="latitude: 104.06493155792882; longitude:30.550799442919338"
         gps-entity-place="latitude: 104.06493155792882; longitude:30.550799442919338"
@@ -96,205 +113,325 @@
         depth="1" height="1" width="1"
       ></a-box> -->
 
+    ,
 
-      ,
+    <a-camera gps-camera rotation-reader> </a-camera>
+    <!-- <a-camera   gps-camera="simulateLatitude: 104.06533772391775;simulateLongitude:30.550837978743637" rotation-reader  > </a-camera> -->
+    <!--<a-camera   gps-projected-camera  look-controls-enabled='false' arjs-look-controls='smoothingFactor: 0.1' gps-camera='gpsMinDistance: 5' rotation-reader  > </a-camera> -->
+  </a-scene>
 
-      <a-camera  gps-camera rotation-reader  > </a-camera>
-      <!-- <a-camera   gps-camera="simulateLatitude: 104.06533772391775;simulateLongitude:30.550837978743637" rotation-reader  > </a-camera> -->
-      <!--<a-camera   gps-projected-camera  look-controls-enabled='false' arjs-look-controls='smoothingFactor: 0.1' gps-camera='gpsMinDistance: 5' rotation-reader  > </a-camera> -->
-    </a-scene>
-
-    <div class="panel">
-      <div id="btnPanel" style="display: block;text-align:center;padding:1em">
-       
-      </div>
-      <div>
-
-    
-
-      <div id="container" ></div>
+  <div class="panel">
+    <div id="btnPanel" style="display: block; text-align: center; padding: 1em"></div>
+    <div>
+      <div id="container"></div>
     </div>
+  </div>
 
-    </div>
-    
-    <script>
+  <script>
+    var direction = { aplha: 0, beta: 0, gamma: 0 };
 
-      var direction = {aplha:0,beta:0,gamma:0}
+    var startPoints = [];
 
-      
-      
-      var diectionDegress = {
-        NORTH:0,
-        EAST:90,
-        SOUTH:180,
-        WEST:360
-      }
+    var endPoints = [];
 
-      var poiList=[
-        {
-          name:"屈臣氏(领地店)",
-          lng:104.063711,
-          lat:30.550005
-        },
+    var walkingPlan = {}
 
-        {
-          name:"斯维登度假酒店",
-          lng:104.065277,
-          lat:30.548157
-        }
-        ,
-        {
-          name: "大连银行",
-          lng: 104.065647,
-          lat:30.547215
-        },
-        {
-          name: "侠客岛",
-          lng: 104.067949,
-          lat:30.548416
-        }
-      ]
+    var existEntities = []
 
-     
+    var existMakers = []
+
+    var currentPosMarker = null
+
+    var diectionDegress = {
+      NORTH: 0,
+      EAST: 90,
+      SOUTH: 180,
+      WEST: 360,
+    };
+
+    var poiList = [
+      {
+        name: "屈臣氏(领地店)",
+        lng: 104.063711,
+        lat: 30.550005,
+      },
+
+      {
+        name: "斯维登度假酒店",
+        lng: 104.065277,
+        lat: 30.548157,
+      },
+      {
+        name: "大连银行",
+        lng: 104.065647,
+        lat: 30.547215,
+      },
+      {
+        name: "侠客岛",
+        lng: 104.067949,
+        lat: 30.548416,
+      },
+    ];
+
     var map = new AMap.Map("container", {
-        resizeEnable: true,
-        center: [104.07564210143,30.551927668036],//地图中心点
-        zoom: 13 
+      resizeEnable: true,
+      center: [104.07564210143, 30.551927668036], //地图中心点
+      zoom: 13,
     });
     var walking = new AMap.Walking({
-        map: map,
-       // panel: "panel"
-       autoFitView:true
-    }); 
-    var colorIndex = 0
-    var colors = ["red","green","yellow","blue"]
-    function getBoxColor(){
-      if(colorIndex >= colors.length){
-        colorIndex = 0
+      map: map,
+      // panel: "panel"
+      autoFitView: true,
+    });
+    var colorIndex = 0;
+    var colors = ["red", "green", "yellow", "blue"];
+    function getBoxColor() {
+      if (colorIndex >= colors.length) {
+        colorIndex = 0;
       }
-      let c =  colors[colorIndex]
-      colorIndex ++
-      return c
+      let c = colors[colorIndex];
+      colorIndex++;
+      return c;
     }
 
-    function setInfo(obj){
-      console.log(obj)
-      document.querySelector("#info").innerHTML = JSON.stringify(obj)
+    function setInfo(obj) {
+      console.log(obj);
+      document.querySelector("#info").innerHTML = JSON.stringify(obj);
     }
 
-    function getDirectionDegree(str){
-      if(str == "北"){
-        return diectionDegress.NORTH
-      }else if(str == "南"){
-        return diectionDegress.SOUTH
-      }else if(str == "东"){
-        return diectionDegress.EAST
-      }else if(str == "西"){
-        return diectionDegress.WEST
-      }else{
+    var computeDistance = function (lat1, lng1, lat2, lng2) {
+      let radLat1 = (lat1 * Math.PI) / 180.0;
+      let radLat2 = (lat2 * Math.PI) / 180.0;
+      let a = radLat1 - radLat2;
+      let b = (lng1 * Math.PI) / 180.0 - (lng2 * Math.PI) / 180.0;
+      let s = 2 *
+        Math.asin(
+          Math.sqrt(
+            Math.pow(Math.sin(a / 2), 2) +
+            Math.cos(radLat1) *
+            Math.cos(radLat2) *
+            Math.pow(Math.sin(b / 2), 2)
+          )
+        );
+      s = s * 6378.137;
+      s = Math.round(s * 10000) / 10000;
+      return s;
+    };
+
+    function drawWalkingPlan(result){
+      if(result == {}){
+        return ;
+      }
+      console.log(result);
+            placeBox(result.origin.lng, result.origin.lat);
+            //placeBox(result.destination.lng, result.destination.lat);
+
+            for (i = 0; i < result.routes.length; i++) {
+              let route = result.routes[i];
+              for (j = 0; j < route.steps.length; j++) {
+                let step = route.steps[j];
+                console.log(step);
+                placeBox(step.start_location.lng, step.start_location.lat);
+                placeBox(step.end_location.lng, step.end_location.lat);
+              }
+            }
+    }
+
+    function getDirectionDegree(str) {
+      if (str == "北") {
+        return diectionDegress.NORTH;
+      } else if (str == "南") {
+        return diectionDegress.SOUTH;
+      } else if (str == "东") {
+        return diectionDegress.EAST;
+      } else if (str == "西") {
+        return diectionDegress.WEST;
+      } else {
         return 0;
       }
     }
 
-    function placeBox(lng,lat){
+    function placeBox(lng, lat) {
+      let fixed = gcoord.transform([lng, lat], gcoord.GCJ02, gcoord.WGS84);
+      console.log(lng, lat, fixed);
+      let box = document.createElement("a-box");
+      let color = document.createAttribute("color");
+      color.value = getBoxColor();
+      let gps = document.createAttribute("gps-entity-place");
+      gps.value = "latitude:" + fixed[1] + ";longitude: " + fixed[0];
+      let scale = document.createAttribute("scale");
+      scale.value = "10 10 10";
+
       
-      let fixed = gcoord.transform([lng,lat],gcoord.GCJ02,gcoord.WGS84)
-      console.log(lng,lat,fixed)
-      let box = document.createElement("a-box")
-      let color = document.createAttribute("color")
-      color.value = getBoxColor()
-      let gps = document.createAttribute("gps-entity-place")
-      gps.value="latitude:"+fixed[1]+";longitude: "+fixed[0]
-      let scale=document.createAttribute("scale")
-      scale.value="10 10 10"
-      
-      box.setAttributeNode(gps)
-      box.setAttributeNode(color)
-      box.setAttributeNode(scale)
+
+      box.setAttributeNode(gps);
+      box.setAttributeNode(color);
+      box.setAttributeNode(scale);
       //console.log(box.getAttributeNames(),box.getAttribute("color"),box.getAttribute("scale"),
       //box.getAttribute("gpsEntityPlace"))
-      console.log(box)
-      let scene =  document.querySelector("#scene")
-      scene.appendChild(box)
+      //console.log(box);
+      let scene = document.querySelector("#scene");
+      scene.appendChild(box);
+      existEntities.push(box)
+
+      
+      let circleMarker = new AMap.CircleMarker({
+        center:[lng,lat],
+        radius:5,
+        strokeColor:'red',
+        strokeWeight:0,
+        strokeOpacity:0.5,
+        fillColor:'red',
+        fillOpacity:0.5,
+        zIndex:500,
+        bubble:true,
+        cursor:'pointer',
+        clickable: true
+      })
+      circleMarker.setMap(map)
+      existMakers.push(circleMarker)
+      console.log("box count :",existEntities.length)
     }
 
 
-    function findRoute(lng,lat){
-      navigator.geolocation.getCurrentPosition(function(position) {
-        let fromWSG84 = [position.coords.longitude , position.coords.latitude]
-        let fromGCJ02 = gcoord.transform(fromWSG84 ,gcoord.WGS84,gcoord.GCJ02)
+    function clearMarkers(){
+      if(existEntities.length > 0){
+        let scene = document.querySelector("#scene")
+        for(i = 0 ;i<existEntities.length;i++){
+          scene.removeChild(existEntities[i])
+        }
+        existEntities = []
+      }
 
-        setInfo({"heading":position.coords.heading,"lng":position.coords.longitude,position})
-
-        
-        console.log("FROM - ",fromWSG84,fromGCJ02)
-        
-        let toGCJ02 = [parseFloat(lng),parseFloat(lat)]
-        let toWGS84 = gcoord.transform(toGCJ02 ,gcoord.GCJ02,gcoord.WGS84)
-
-        console.log("TO - ",toWGS84,toGCJ02)
-
-        walking.search(fromGCJ02,toGCJ02,function(status,result){
-          if (status === 'complete') {
-            console.log(result)
-            placeBox(result.origin.lng,result.origin.lat)
-            placeBox(result.destination.lng,result.destination.lat)
-
-            for(i=0;i<result.routes.length;i++){
-              let route = result.routes[i]
-              for(j=0;j<route.steps.length;j++){
-                let step = route.steps[j]
-                console.log(step)
-                placeBox(step.start_location.lng,step.start_location.lat)
-                placeBox(step.end_location.lng,step.end_location.lat)
-              }
-            }
-            
-            console.log('绘制步行路线完成')
-          } else {
-            console.log('步行路线数据查询失败' + result)
-          } 
-        })
-
-        
-    });
-    }
-
-    var placeSearch;
-    AMap.plugin(['AMap.PlaceSearch'],function(){
-      placeSearch = new AMap.PlaceSearch({
-        city: '028'
-      });
-    })
-
-
-    window.onload = function () {
-
-      let btnPanel = document.querySelector("#btnPanel")
-      let btn
-      for(i=0;i<poiList.length;i++){
-        btn = document.createElement("button")
-        btn.setAttribute("class","button")
-        btn.setAttribute("data-lng",poiList[i].lng)
-        btn.setAttribute("data-lat",poiList[i].lat)
-        btn.innerHTML = poiList[i].name
-        btn.addEventListener("click",function(e){
-          let lng = e.srcElement.getAttribute("data-lng")
-          let lat = e.srcElement.getAttribute("data-lat")
-          findRoute(lng,lat)
-        })
-        btnPanel.appendChild(btn)
+      if(existMakers.length > 0){
+        for(i = 0 ;i<existMakers.length;i++){
+          map.remove(existMakers[i])
+        }
+        existMakers = []
       }
     }
 
-    window.addEventListener('deviceorientation', function(e){
-      setInfo('absolute: ' + e.absolute+';<br/>alpha: ' + e.alpha+';<br/> beta: ' + e.beta+';<br/>gamma: ' + e.gamma)
-      direction.aplha = e.alpha
-      direction.beta = e.beta
-      direction.gamma = e.gamma
-      
-  }, false);
+    function findRoute(lng, lat) {
+      startPoints = [];
+      endPoints = [];
 
+      clearMarkers()
+
+      navigator.geolocation.getCurrentPosition(function (position) {
+
+        
+        let fromWSG84 = [position.coords.longitude, position.coords.latitude];
+        let fromGCJ02 = gcoord.transform(
+          fromWSG84,
+          gcoord.WGS84,
+          gcoord.GCJ02
+        );
+
+        currentPosMarker =  new AMap.CircleMarker({
+          center:[fromGCJ02[0],fromGCJ02[1]],
+          radius:5,
+          strokeColor:'green',
+          strokeWeight:0,
+          strokeOpacity:0.5,
+          fillColor:'green',
+          fillOpacity:0.5,
+          zIndex:500,
+          bubble:true,
+          cursor:'pointer',
+          clickable: true
+        })
+
+        setInfo({
+          heading: position.coords.heading,
+          lng: position.coords.longitude,
+          position,
+        });
+
+        console.log("FROM - ", fromWSG84, fromGCJ02);
+
+        let toGCJ02 = [parseFloat(lng), parseFloat(lat)];
+        let toWGS84 = gcoord.transform(toGCJ02, gcoord.GCJ02, gcoord.WGS84);
+
+        console.log("TO - ", toWGS84, toGCJ02);
+
+        walking.search(fromGCJ02, toGCJ02, function (status, result) {
+          if (status === "complete") {
+            
+            walkingPlan = result
+
+            drawWalkingPlan(walkingPlan)
+
+            console.log("绘制步行路线完成");
+          } else {
+            console.log("步行路线数据查询失败" + result);
+          }
+        });
+      });
+    }
+
+    var placeSearch;
+    AMap.plugin(["AMap.PlaceSearch"], function () {
+      placeSearch = new AMap.PlaceSearch({
+        city: "028",
+      });
+    });
+
+    window.onload = function () {
+      let btnPanel = document.querySelector("#btnPanel");
+      let btn;
+      for (i = 0; i < poiList.length; i++) {
+        btn = document.createElement("button");
+        btn.setAttribute("class", "button");
+        btn.setAttribute("data-lng", poiList[i].lng);
+        btn.setAttribute("data-lat", poiList[i].lat);
+        btn.innerHTML = poiList[i].name;
+        btn.addEventListener("click", function (e) {
+          let lng = e.srcElement.getAttribute("data-lng");
+          let lat = e.srcElement.getAttribute("data-lat");
+          findRoute(lng, lat);
+        });
+        btnPanel.appendChild(btn);
+      }
+    };
+
+    navigator.geolocation.watchPosition(function(position){
+
+      if(currentPosMarker != null){
+        let fromWSG84 = [position.coords.longitude, position.coords.latitude];
+        let fromGCJ02 = gcoord.transform(
+          fromWSG84,
+          gcoord.WGS84,
+          gcoord.GCJ02
+        );
+
+        currentPosMarker.center = [fromGCJ02[0],fromGCJ02[1]] 
+      }
+      
+
+    }, function(e){
+      console.error(e)
+    });
+
+    window.addEventListener(
+      "deviceorientation",
+      function (e) {
+        setInfo(
+          "absolute: " +
+          e.absolute +
+          ";<br/>alpha: " +
+          e.alpha +
+          ";<br/> beta: " +
+          e.beta +
+          ";<br/>gamma: " +
+          e.gamma
+        );
+        direction.aplha = e.alpha;
+        direction.beta = e.beta;
+        direction.gamma = e.gamma;
+      },
+      false
+    );
   </script>
-  </body>
+</body>
+
 </html>
