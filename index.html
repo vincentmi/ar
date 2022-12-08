@@ -200,7 +200,7 @@
         let fromWSG84 = [position.coords.longitude , position.coords.latitude]
         let fromGCJ02 = gcoord.transform(fromWSG84 ,gcoord.WGS84,gcoord.GCJ02)
 
-        setInfo({"heading":position.coords.heading,"lng":position.coords.longitude})
+        setInfo({"heading":position.coords.heading,"lng":position.coords.longitude,position})
 
         
         console.log("FROM - ",fromWSG84,fromGCJ02)
@@ -257,6 +257,13 @@
         btnPanel.appendChild(btn)
       }
     }
+
+    window.addEventListener('deviceorientation', function(e){
+      console.log('absolute: ' + e.absolute)
+      console.log('alpha: ' + e.alpha)
+      console.log('beta: ' + e.beta)
+      console.log('gamma: ' + e.gamma)
+  }, false);
 
   </script>
   </body>
