@@ -119,6 +119,17 @@
     
     <script>
 
+      var direction = {aplha:0,beta:0,gamma:0}
+
+      
+      
+      var diectionDegress = {
+        NORTH:0,
+        EAST:90,
+        SOUTH:180,
+        WEST:360
+      }
+
       var poiList=[
         {
           name:"屈臣氏(领地店)",
@@ -171,6 +182,20 @@
       document.querySelector("#info").innerHTML = JSON.stringify(obj)
     }
 
+    function getDirectionDegree(str){
+      if(str == "北"){
+        return diectionDegress.NORTH
+      }else if(str == "南"){
+        return diectionDegress.SOUTH
+      }else if(str == "东"){
+        return diectionDegress.EAST
+      }else if(str == "西"){
+        return diectionDegress.WEST
+      }else{
+        return 0;
+      }
+    }
+
     function placeBox(lng,lat){
       
       let fixed = gcoord.transform([lng,lat],gcoord.GCJ02,gcoord.WGS84)
@@ -217,7 +242,12 @@
 
             for(i=0;i<result.routes.length;i++){
               let route = result.routes[i]
-            
+              for(j=0;j<route.steps.length;j++){
+                let step = route.steps[j]
+                console.log(step)
+                placeBox(step.start_location.lng,step.start_location.lat)
+                placeBox(step.end_location.lng,step.end_location.lat)
+              }
             }
             
             console.log('绘制步行路线完成')
@@ -259,6 +289,10 @@
 
     window.addEventListener('deviceorientation', function(e){
       setInfo('absolute: ' + e.absolute+';<br/>alpha: ' + e.alpha+';<br/> beta: ' + e.beta+';<br/>gamma: ' + e.gamma)
+      direction.aplha = e.alpha
+      direction.beta = e.beta
+      direction.gamma = e.gamma
+      
   }, false);
 
   </script>
