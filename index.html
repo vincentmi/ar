@@ -383,13 +383,13 @@
     navigator.geolocation.watchPosition(function(position){
       
       let fromWSG84 = [position.coords.longitude, position.coords.latitude];
-        let fromGCJ02 = gcoord.transform(
+      let fromGCJ02 = gcoord.transform(
           fromWSG84,
           gcoord.WGS84,
           gcoord.GCJ02
         );
 
-        
+        setInfo("watchPosition" + fromGCJ02)
 
       if(currentPosMarker != null){
         map.remove(currentPosMarker)
@@ -401,7 +401,7 @@
           strokeWeight:0,
           strokeOpacity:0.5,
           fillColor:'green',
-          fillOpacity:0.5,
+          fillOpacity:1,
           zIndex:500,
           bubble:true,
           cursor:'pointer',
@@ -418,16 +418,7 @@
     window.addEventListener(
       "deviceorientation",
       function (e) {
-        setInfo(
-          "absolute: " +
-          e.absolute +
-          ";<br/>alpha: " +
-          e.alpha +
-          ";<br/> beta: " +
-          e.beta +
-          ";<br/>gamma: " +
-          e.gamma
-        );
+        //setInfo("absolute: " +e.absolute +";<br/>alpha: " +e.alpha +";<br/> beta: " +e.beta +";<br/>gamma: " +e.gamma);
         direction.aplha = e.alpha;
         direction.beta = e.beta;
         direction.gamma = e.gamma;
