@@ -274,7 +274,7 @@
       scene.appendChild(box);
       existEntities.push(box)
 
-      
+
       let circleMarker = new AMap.CircleMarker({
         center:[lng,lat],
         radius:5,
@@ -395,16 +395,30 @@
     };
 
     navigator.geolocation.watchPosition(function(position){
-
-      if(currentPosMarker != null){
-        let fromWSG84 = [position.coords.longitude, position.coords.latitude];
+      
+      let fromWSG84 = [position.coords.longitude, position.coords.latitude];
         let fromGCJ02 = gcoord.transform(
           fromWSG84,
           gcoord.WGS84,
           gcoord.GCJ02
         );
 
+      if(currentPosMarker != null){
         currentPosMarker.center = [fromGCJ02[0],fromGCJ02[1]] 
+      }else{
+        currentPosMarker =  new AMap.CircleMarker({
+          center:[fromGCJ02[0],fromGCJ02[1]],
+          radius:5,
+          strokeColor:'green',
+          strokeWeight:0,
+          strokeOpacity:0.5,
+          fillColor:'green',
+          fillOpacity:0.5,
+          zIndex:500,
+          bubble:true,
+          cursor:'pointer',
+          clickable: true
+        })
       }
       
 
