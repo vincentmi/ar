@@ -329,20 +329,20 @@
 
         if(currentPosMarker == null) {
 
-        currentPosMarker =  new AMap.CircleMarker({
-          center:[fromGCJ02[0],fromGCJ02[1]],
-          radius:5,
-          strokeColor:'green',
-          strokeWeight:0,
-          strokeOpacity:0.5,
-          fillColor:'green',
-          fillOpacity:1,
-          zIndex:500,
-          bubble:true,
-          cursor:'pointer',
-          clickable: true
-        })
-        currentPosMarker.setMap(map)
+          currentPosMarker =  new AMap.CircleMarker({
+            center:[fromGCJ02[0],fromGCJ02[1]],
+            radius:5,
+            strokeColor:'green',
+            strokeWeight:0,
+            strokeOpacity:0.5,
+            fillColor:'green',
+            fillOpacity:1,
+            zIndex:500,
+            bubble:true,
+            cursor:'pointer',
+            clickable: true
+          })
+          currentPosMarker.setMap(map)
       }
 
 
@@ -411,7 +411,6 @@
         );
 
         setInfo("watchPosition" + fromGCJ02)
-
         currentPosMarker.setPosition([fromGCJ02[0],fromGCJ02[1]])
       
 
