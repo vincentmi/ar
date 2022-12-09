@@ -390,10 +390,7 @@
         );
 
         setInfo("watchPosition" + fromGCJ02)
-
-      if(currentPosMarker != null){
-        map.remove(currentPosMarker)
-      }else{
+        
         currentPosMarker =  new AMap.CircleMarker({
           center:[fromGCJ02[0],fromGCJ02[1]],
           radius:5,
@@ -408,7 +405,6 @@
           clickable: true
         })
         currentPosMarker.setMap(map)
-      }
       
 
     }, function(e){
