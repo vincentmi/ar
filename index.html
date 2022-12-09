@@ -327,6 +327,21 @@
           gcoord.GCJ02
         );
 
+        currentPosMarker =  new AMap.CircleMarker({
+          center:[fromGCJ02[0],fromGCJ02[1]],
+          radius:5,
+          strokeColor:'green',
+          strokeWeight:0,
+          strokeOpacity:0.5,
+          fillColor:'green',
+          fillOpacity:1,
+          zIndex:500,
+          bubble:true,
+          cursor:'pointer',
+          clickable: true
+        })
+        currentPosMarker.setMap(map)
+
         setInfo({
           heading: position.coords.heading,
           lng: position.coords.longitude,
@@ -390,21 +405,8 @@
         );
 
         setInfo("watchPosition" + fromGCJ02)
-        
-        currentPosMarker =  new AMap.CircleMarker({
-          center:[fromGCJ02[0],fromGCJ02[1]],
-          radius:5,
-          strokeColor:'green',
-          strokeWeight:0,
-          strokeOpacity:0.5,
-          fillColor:'green',
-          fillOpacity:1,
-          zIndex:500,
-          bubble:true,
-          cursor:'pointer',
-          clickable: true
-        })
-        currentPosMarker.setMap(map)
+
+        currentPosMarker.moveTo([fromGCJ02[0],fromGCJ02[1]])
       
 
     }, function(e){
