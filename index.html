@@ -412,7 +412,7 @@
 
         setInfo("watchPosition" + fromGCJ02)
         console.log(currentPosMarker)
-        currentPosMarker.setCenter([fromGCJ02[0],fromGCJ02[1]])
+        currentPosMarker.center = setCenter(fromGCJ02[0],fromGCJ02[1])
       
 
     }, function(e){
