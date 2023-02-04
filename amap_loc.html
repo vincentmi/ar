@@ -12,9 +12,27 @@
             width: 100%;
         }
 
+        #panel {
+            width:100%;
+            height: 3em;
+            text-align: right;
+            display:block;
+            position:absolute;
+            bottom: 0;
+            right:0;
+            float:right;
+            z-index: 9999;
+            padding:5px;
+        }
+        #panel button{
+            margin-right:2px;
+        }
+
     </style>
 </head>
 <body>
+
+<div id="panel"></div>
 <div id="container"></div>
 <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=3427e2b77a4a280034b7a59f136c33a9"></script>
 <script type="text/javascript" src="amap_assign.js"></script>
@@ -24,14 +42,17 @@
     "#800000", "#000080", "#808000","#FFFF00","#800080", "#FF0000"
     ]
     var count = {}
+    var assignTable = {}
     var assign_print = ""
     var total = 0
     for(i in assign){
         assignedTo = assign[i]
         if(typeof count[assignedTo] == "undefined"){
             count[assignedTo]= 1
+            assignTable[assignedTo] = [i]
         }else{
             count[assignedTo]++
+            assignTable[assignedTo].push(i)
         }
         assign_print += i + "\t"+assignedTo+"\n";
         total++
@@ -39,7 +60,7 @@
     for(i in count){
         console.log(i+":"+count[i])
     }
-    
+    console.log(assignTable)
     console.log(assign_print)
     console.log(total)
 
@@ -75,7 +96,8 @@
     
 
 
-    
+    var markerGroup = {}
+    var markerGroupShow={}
 
     for( i in projects){
         let project = projects[i]
@@ -98,6 +120,15 @@
             fillColor:getColor(project.name),
             fillOpacity:0.9
         })
+
+        let assignToUser = getAssigned(project.name)
+        if(typeof markerGroup[assignToUser] == "undefined"){
+            markerGroup[assignToUser] = [m]
+            markerGroupShow[assignToUser] = true
+        }else{
+            markerGroup[assignToUser].push(m)
+        }
+
         m.on("mouseover",function(){
             //console.log(project)
             infoWindow = new AMap.InfoWindow({
@@ -111,7 +142,33 @@
         
     }
 
-    map.add(marker);
+
+    console.log("markerGroup",markerGroup)
+
+    let text = ""
+    
+    for( i in markerGroup){
+        text +="<button onclick=\"toggle('"+i+"')\">"+i+"</button>"
+    }
+    document.getElementById("panel").innerHTML = text
+
+    function toggle(id){
+        let show = false
+        if(markerGroupShow[id]){
+            markerGroupShow[id]=false
+        }else{
+            markerGroupShow[id]=true
+            show = true
+        }
+        let markers = markerGroup[id]
+        for(i in markers){
+            if(show){
+                markers[i].show()
+            }else{
+                markers[i].hide()
+            }
+        }
+    }
     
 </script>
 </body>
