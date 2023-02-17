@@ -24,6 +24,27 @@
             z-index: 9999;
             padding:5px;
         }
+        #panel2 {
+            width:100%;
+            height: 3em;
+            text-align: right;
+            display:block;
+            position:absolute;
+            top: 0;
+            right:0;
+            float:right;
+            z-index: 9999;
+            padding:5px;
+        }
+        #panel2 button{
+            margin-right:2px;
+            border:1px solid #eee;
+            color:#FFF;
+            text-shadow: #000 1px 1px 1px;
+            border-radius: 5px;
+            padding:0.5em;
+            opacity: 0.8;
+        }
         #panel button{
             margin-right:2px;
             border:1px solid #eee;
@@ -38,9 +59,11 @@
 <body>
 
 <div id="panel"></div>
+<div id="panel2"></div>
 <div id="container"></div>
 <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=3427e2b77a4a280034b7a59f136c33a9"></script>
 <script type="text/javascript" src="amap_assign.js"></script>
+<script type="text/javascript" src="amap_collect.js"></script>
 <script type="text/javascript" src="amap_project.js"></script>
 <script type="text/javascript">
     var colors = ["#00FFFF","#0000FF", "#FF00FF", "#008000", "#00FF00",
@@ -65,9 +88,9 @@
     for(i in count){
         console.log(i+":"+count[i])
     }
-    console.log(assignTable)
-    console.log(assign_print)
-    console.log(total)
+    //console.log(assignTable)
+    //console.log(assign_print)
+    //console.log(total)
 
    
 
@@ -124,7 +147,8 @@
             bubble:true,
             strokeOpacity:0,
             fillColor:getColor(project.name),
-            fillOpacity:0.7
+            fillOpacity:0.7,
+            extData:project.name
         })
 
         let assignToUser = getAssigned(project.name)
@@ -156,7 +180,19 @@
     for( i in markerGroup){
         text +="<button style=\"background-color:"+selectedColor[i]+"\" onclick=\"toggle('"+i+"')\">"+i+"</button>"
     }
+
+    
+
     document.getElementById("panel").innerHTML = text
+
+    text2 = "<button style=\"background-color:green\" onclick=\"setProgressMarker(1)\">Done:"+collectDone+"</button>"
+    text2 += "<button style=\"background-color:gray\" onclick=\"setProgressMarker(0)\">Total:"+collectTotal+"</button>"
+
+    text2 += "<button style=\"background-color:black\"onclick=\"setProgressMarker(-1)\">"+Math.ceil((collectDone/collectTotal)*100)+"%,Show All</button>"
+
+    text2 += "<button style=\"background-color:black\"onclick=\"setProgressMarker(-2)\">Clear All</button>"
+
+    document.getElementById("panel2").innerHTML = text2
 
     function toggle(id){
         let show = false
@@ -175,6 +211,36 @@
             }
         }
     }
+
+    function setProgressMarker(type){
+        for(id in markerGroup){
+            for(markerId in markerGroup[id]){
+                let marker = markerGroup[id][markerId]
+                let pName = marker.getExtData()
+                if(type == -1){
+                    marker.show()
+                }else if(type == -2){
+                    marker.hide()
+                }else if(type == 0){
+                   if(collectStatus[pName] == 0){
+                        marker.show()
+                   }else{
+                        marker.hide()
+                   }
+
+                }else if(type == 1){
+                    if(collectStatus[pName] == 1){
+                         marker.show()
+                    }else{
+                         marker.hide()
+                    }
+ 
+                 }
+            }
+        }
+    }
+
+    console.log(collectStatus)
     
 </script>
 </body>
