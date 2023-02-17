@@ -121,6 +121,19 @@
             return selectedColor[name]
         }
     }
+
+    function getProgressPercent(name)
+    {
+        let  total = assignTable[name].length
+        let done = 0
+        for(i in assignTable[name]){
+            let projName = assignTable[name][i]
+            if(collectStatus[projName] == 1){
+                done ++ 
+            }
+        }
+        return Math.ceil((done/total)*100) + "%"
+    }
     
     
 
@@ -178,7 +191,7 @@
     let text = ""
     
     for( i in markerGroup){
-        text +="<button style=\"background-color:"+selectedColor[i]+"\" onclick=\"toggle('"+i+"')\">"+i+"</button>"
+        text +="<button style=\"background-color:"+selectedColor[i]+"\" onclick=\"toggle('"+i+"')\">"+i+"("+getProgressPercent(i)+")"+"</button>"
     }
 
     
