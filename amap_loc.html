@@ -60,6 +60,7 @@
 
 <div id="panel"></div>
 <div id="panel2"></div>
+<div id="ext"></div>
 <div id="container"></div>
 <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=3427e2b77a4a280034b7a59f136c33a9"></script>
 <script type="text/javascript" src="amap_assign.js"></script>
@@ -132,9 +133,14 @@
                 done ++ 
             }
         }
-        return Math.ceil((done/total)*100) + "%"
+        return "("+done + "/" + total+","+Math.ceil((done/total)*100)+"%)"
+        //return Math.ceil((done/total)*100) + "%"
     }
     
+    var poptable=function(){
+        let pop = document.getElementById("#ext")
+        pop.setAttribute("style","display:block")
+    }
     
 
 
@@ -193,6 +199,8 @@
     for( i in markerGroup){
         text +="<button style=\"background-color:"+selectedColor[i]+"\" onclick=\"toggle('"+i+"')\">"+i+"("+getProgressPercent(i)+")"+"</button>"
     }
+
+    text += "<button style=\"background-color:gray\" onclick=\"poptable()\">EXT</button>"
 
     
 
