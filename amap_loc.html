@@ -89,7 +89,7 @@
     for(i in count){
         console.log(i+":"+count[i])
     }
-    //console.log(assignTable)
+    console.log(assignTable)
     //console.log(assign_print)
     //console.log(total)
 
@@ -125,6 +125,10 @@
 
     function getProgressPercent(name)
     {
+        console.log("+"+name+"+")
+        if(typeof assignTable[name] == "undefined"){
+            return "-";
+        }
         let  total = assignTable[name].length
         let done = 0
         for(i in assignTable[name]){

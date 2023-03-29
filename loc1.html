@@ -1,0 +1,184 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>南区踩盘分配</title>
+    <style>
+        html, body, #container {
+            height: 100%;
+            width: 100%;
+        }
+
+        #panel {
+            width:100%;
+            height: 3em;
+            text-align: right;
+            display:block;
+            position:absolute;
+            bottom: 0;
+            right:0;
+            float:right;
+            z-index: 9999;
+            padding:5px;
+        }
+        #panel2 {
+            width:100%;
+            height: 3em;
+            text-align: right;
+            display:block;
+            position:absolute;
+            top: 0;
+            right:0;
+            float:right;
+            z-index: 9999;
+            padding:5px;
+        }
+        #panel2 button{
+            margin-right:2px;
+            border:1px solid #eee;
+            color:#FFF;
+            text-shadow: #000 1px 1px 1px;
+            border-radius: 5px;
+            padding:0.5em;
+            opacity: 0.8;
+        }
+        #panel button{
+            margin-right:2px;
+            border:1px solid #eee;
+            color:#FFF;
+            text-shadow: #000 1px 1px 1px;
+            border-radius: 5px;
+            padding:0.5em;
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="panel"></div>
+<div id="panel2"></div>
+<div id="ext"></div>
+<div id="container"></div>
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=3427e2b77a4a280034b7a59f136c33a9"></script>
+<script type="text/javascript">
+    var colors = ["#00FFFF","#0000FF", "#FF00FF", "#008000", "#00FF00",
+    "#800000", "#000080", "#808000","#FFFF00","#800080", "#FF0000"
+    ]
+    var count = {}
+    var assignTable = {}
+    var assign_print = ""
+    var total = 0
+
+    
+
+    var marker, map = new AMap.Map("container", {
+        resizeEnable: true,
+        center: [106.575329,29.557253],
+        zoom: 13,
+        viewMode: '2D'  //设置地图模式
+        //mapStyle:"amap://styles/light"
+    });
+
+
+    AMap.plugin([
+    'AMap.ToolBar',
+    'AMap.Scale',
+    'AMap.HawkEye',
+    'AMap.MapType',
+    'AMap.Geolocation',
+    'AMap.ControlBar'
+], function(){
+    map.addControl(new AMap.ToolBar());
+    map.addControl(new AMap.Scale());
+    map.addControl(new AMap.HawkEye({isOpen:true}));
+    map.addControl(new AMap.MapType());
+    map.addControl(new AMap.Geolocation());
+});
+
+    
+
+
+    var selectedColor = {}
+    function getColor(projectName){
+        if( projectName == "重庆西"||projectName == "重庆北"
+        ||projectName == "重庆南" || projectName == "沙坪坝"){
+            return "#EEEEEE"
+        }
+
+        if(projectName == "重庆金山汇酒店"){
+            return "#EEEEEE"
+        }
+        let name = projectName
+        if(name == ""){
+            return "#CCCCCC"
+        }else{
+            if(typeof selectedColor[name] == "undefined"){
+                selectedColor[name] = colors.shift()
+            }
+            return selectedColor[name]
+        }
+    }
+
+    var projects = [
+        {name:"鹅岭二厂",loc:"106.540183,29.551101"},
+        {name:"山城巷",loc:"106.568849,29.550065"},
+        {name:"莺花巷",loc:"106.553523,29.574119"},
+        {name:"紫薇路",loc:"106.5338,29.59018"},
+        {name:"金山意库",loc:"106.575053,29.629292"},
+        {name:"一奥天地",loc:"106.567227,29.645032"},
+        {name:"栖息地",loc:"106.533445,29.613985"},
+        {name:"原聚场",loc:"106.499273,29.566405"},
+        {name:"后堡",loc:"106.570169,29.538022"},
+        {name:"下浩里",loc:"106.595968,29.557692"},
+        {name:"重庆金山汇酒店",loc:"106.569778,29.644346"},
+        {name:"重庆西",loc:"106.436604,29.500308"},
+        {name:"重庆北",loc:"106.550943,29.609826"},
+        {name:"重庆南",loc:"106.538942,29.49678"},
+        {name:"沙坪坝",loc:"106.460664,29.554128"},
+        
+    ]
+
+    for( i in projects){
+        let project = projects[i]
+        lnglat = project.loc.split(",")
+        if(lnglat.length != 2){
+            continue;
+        }
+
+        let lnglat1 = new AMap.LngLat(lnglat[0],lnglat[1])
+        //map.add(new AMap.Marker({
+        //    position: new AMap.LngLat(lnglat[0],lnglat[1]), 
+        //    title: project.name
+        //}))
+
+        let m = new AMap.CircleMarker({
+            center: lnglat1, 
+            radius:9,
+            bubble:true,
+            strokeOpacity:1,
+            strokeColor:"#000000",
+            fillColor:getColor(project.name),
+            fillOpacity:1,
+            extData:project.name
+        })
+
+        m.on("mouseover",function(){
+            //console.log(project)
+            infoWindow = new AMap.InfoWindow({
+                anchor: 'top-left',
+                content: project.name,
+            });
+            infoWindow.open(map,lnglat1)
+        })
+        map.add(m)
+
+        
+    }
+
+
+    
+</script>
+</body>
+</html>
