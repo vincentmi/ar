@@ -164,14 +164,18 @@
             extData:project.name
         })
 
-        m.on("mouseover",function(){
+        let mfunc = function(){
             //console.log(project)
             infoWindow = new AMap.InfoWindow({
                 anchor: 'top-left',
                 content: project.name,
             });
             infoWindow.open(map,lnglat1)
-        })
+        }
+
+        m.on("mouseover",mfunc)
+        m.on("touchstart",mfunc)
+        
         map.add(m)
 
         
